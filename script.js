@@ -2,29 +2,32 @@
 const LOWERCASECHARACTERS = 'qwertyuioplkjhgfdsazxcvbnm'
 const UPPERCASECHARACTERS = 'QWERTYUIOPLKJHGFDSAZXCVBNM'
 const NUMBERCHARACTERS = '0123456789'
-const SPECIALCHARACTERS = '!"#$%&"()*+,-./:;<=>?@[^_]`{}\|~'
+const SPECIALCHARACTERS = '!#$%&()*+,-./:;<=>?@[^_]`{}\|~'
 
 
 function generatePassword(passwordLength) {
-
+  
   var passwordLengthValidated = passwordLength 
   if (passwordLengthValidated === undefined) {
     passwordLengthValidated = validatePasswordLen();
   }
   //change to object?
-  var charTypeLowercase = window.confirm("Include lower case characters?");
-  var charTypeUppercase = window.confirm("Include upper case characters?");
-  var charTypeNumber = window.confirm("Include numbers?");
-  var charTypeSpecial = window.confirm("Include special characters?");
+  var charTypeLowercase = window.confirm("Include lower case characters? Ok for Yes Cancel for No.");
+  var charTypeUppercase = window.confirm("Include upper case characters? Ok for Yes Cancel for No.");
+  var charTypeNumber = window.confirm("Include numbers? Ok for Yes Cancel for No.");
+  var charTypeSpecial = window.confirm("Include special characters? Ok for Yes Cancel for No.");
   
   if (charTypeLowercase === false && charTypeUppercase === false && charTypeNumber === false && charTypeSpecial === false) {
     window.alert("Please include at least one of the character types");
     generatePassword(passwordLengthValidated);
   }
-  debugger;
-  createPassword(passwordLengthValidated, charTypeLowercase, charTypeUppercase, charTypeNumber, charTypeSpecial);
+  
+  var passwordUnshuffled = createPassword(passwordLengthValidated, charTypeLowercase, charTypeUppercase, charTypeNumber, charTypeSpecial);
+  
+  var finalPassword = shuffleArray(passwordUnshuffled)
 
 
+  return finalPassword.join('')
 } 
 
 function validatePasswordLen() {
@@ -36,18 +39,18 @@ function validatePasswordLen() {
   }
   return passwordLength
 }
-debugger;
+
 function createPassword(passwordLengthValidated, charTypeLowercase, charTypeUppercase, charTypeNumber, charTypeSpecial) {
   var charTypeUsed = []
   
-  var passwordUnshuffled = []
+  
   
 
   if (charTypeLowercase === true) {
     charTypeUsed.push('lower')
   }
   if (charTypeUppercase === true) {
-    charTypeUsed.push('UPPER')
+    charTypeUsed.push('upper')
   }
   if (charTypeNumber === true) {
     charTypeUsed.push('number')
@@ -57,17 +60,22 @@ function createPassword(passwordLengthValidated, charTypeLowercase, charTypeUppe
   }
   
   shuffleArray(charTypeUsed);
-  
+
+  var passwordCharArray = []
   for (i = 0; i < passwordLengthValidated; i++) {
-    var limit = charTypeUsed.length - 1
+    var limit = charTypeUsed.length
     var passwordChar = ''
+
     if(i < limit) {
       passwordChar = determinePassChar(charTypeUsed[i])
 
+      } else {
+        var randomCharType = charTypeUsed[Math.floor(Math.random() * charTypeUsed.length)]
+        passwordChar = determinePassChar(randomCharType)
       }
-    }
-    passwordUnshuffled.push(passwordChar)
-
+      passwordCharArray.push(passwordChar)
+    } 
+  return passwordCharArray
 }
 
 function determinePassChar (charType) {
@@ -79,20 +87,26 @@ function determinePassChar (charType) {
     case 'upper':
       char = UPPERCASECHARACTERS.charAt(Math.floor(Math.random() * UPPERCASECHARACTERS.length));
       return char;
-    case 'number'
+    case 'number':
+      char = NUMBERCHARACTERS.charAt(Math.floor(Math.random() * NUMBERCHARACTERS.length));
+      return char;
+    case 'special':
+      char = SPECIALCHARACTERS.charAt(Math.floor(Math.random() * SPECIALCHARACTERS.length));
+      return char;
+
   }
 }
 
-function shuffleArray(charTypeUsed) {
-  let currentIndex = charTypeUsed.length, randomIndex;
+function shuffleArray(array) {
+  let currentIndex = array.length, randomIndex;
 
   while (currentIndex != 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);;
     currentIndex--;
 
-    [charTypeUsed[currentIndex], charTypeUsed[randomIndex]] = [charTypeUsed[randomIndex], charTypeUsed[currentIndex]];
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
-  return charTypeUsed
+  return array
 }
 
 // Get references to the #generate element
