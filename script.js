@@ -1,8 +1,8 @@
 // Assignment code here
 const LOWERCASECHARACTERS = 'qwertyuioplkjhgfdsazxcvbnm'
 const UPPERCASECHARACTERS = 'QWERTYUIOPLKJHGFDSAZXCVBNM'
-const NUMBERS = '0123456789'
-const SPECIALCHARACTERS = '!"#$%&"()*+,-./:;<=>?@[\]^_`{}|~'
+const NUMBERCHARACTERS = '0123456789'
+const SPECIALCHARACTERS = '!"#$%&"()*+,-./:;<=>?@[^_]`{}\|~'
 
 
 function generatePassword(passwordLength) {
@@ -21,6 +21,7 @@ function generatePassword(passwordLength) {
     window.alert("Please include at least one of the character types");
     generatePassword(passwordLengthValidated);
   }
+  debugger;
   createPassword(passwordLengthValidated, charTypeLowercase, charTypeUppercase, charTypeNumber, charTypeSpecial);
 
 
@@ -35,13 +36,63 @@ function validatePasswordLen() {
   }
   return passwordLength
 }
-
+debugger;
 function createPassword(passwordLengthValidated, charTypeLowercase, charTypeUppercase, charTypeNumber, charTypeSpecial) {
-  var charTypeAll = LOWERCASECHARACTERS + UPPERCASECHARACTERS + NUMBERS + SPECIALCHARACTERS
-  for (var i = 0; i < passwordLengthValidated; i++) {
-    var result = charTypeAll.charAt(Math.floor(Math.random() * passwordLengthValidated));
+  var charTypeUsed = []
+  
+  var passwordUnshuffled = []
+  
+
+  if (charTypeLowercase === true) {
+    charTypeUsed.push('lower')
   }
-  console.log(result)
+  if (charTypeUppercase === true) {
+    charTypeUsed.push('UPPER')
+  }
+  if (charTypeNumber === true) {
+    charTypeUsed.push('number')
+  }
+  if (charTypeSpecial === true) {
+    charTypeUsed.push('special')
+  }
+  
+  shuffleArray(charTypeUsed);
+  
+  for (i = 0; i < passwordLengthValidated; i++) {
+    var limit = charTypeUsed.length - 1
+    var passwordChar = ''
+    if(i < limit) {
+      passwordChar = determinePassChar(charTypeUsed[i])
+
+      }
+    }
+    passwordUnshuffled.push(passwordChar)
+
+}
+
+function determinePassChar (charType) {
+  var char = ''
+  switch(charType) {
+    case 'lower':
+      char = LOWERCASECHARACTERS.charAt(Math.floor(Math.random() * LOWERCASECHARACTERS.length));
+      return char;
+    case 'upper':
+      char = UPPERCASECHARACTERS.charAt(Math.floor(Math.random() * UPPERCASECHARACTERS.length));
+      return char;
+    case 'number'
+  }
+}
+
+function shuffleArray(charTypeUsed) {
+  let currentIndex = charTypeUsed.length, randomIndex;
+
+  while (currentIndex != 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);;
+    currentIndex--;
+
+    [charTypeUsed[currentIndex], charTypeUsed[randomIndex]] = [charTypeUsed[randomIndex], charTypeUsed[currentIndex]];
+  }
+  return charTypeUsed
 }
 
 // Get references to the #generate element
