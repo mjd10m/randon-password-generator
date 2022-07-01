@@ -14,18 +14,24 @@ function generatePassword(passwordLength) {
     passwordLengthValidated = validatePasswordLen();
   }
   //Prompts user to select which character types they want to include
-  var charTypeLowercase = window.confirm("Include lower case characters? Ok for Yes Cancel for No.");
-  var charTypeUppercase = window.confirm("Include upper case characters? Ok for Yes Cancel for No.");
-  var charTypeNumber = window.confirm("Include numbers? Ok for Yes Cancel for No.");
-  var charTypeSpecial = window.confirm("Include special characters? Ok for Yes Cancel for No.");
+  var charType ={
+    Lowercase: window.confirm("Include lower case characters? Ok for Yes Cancel for No."),
+    Uppercase: window.confirm("Include upper case characters? Ok for Yes Cancel for No."),
+    Number: window.confirm("Include numbers? Ok for Yes Cancel for No."),
+    Special: window.confirm("Include special characters? Ok for Yes Cancel for No.")
+  };
+//  var charTypeLowercase = window.confirm("Include lower case characters? Ok for Yes Cancel for No.");
+//  var charTypeUppercase = window.confirm("Include upper case characters? Ok for Yes Cancel for No.");
+//  var charTypeNumber = window.confirm("Include numbers? Ok for Yes Cancel for No.");
+//  var charTypeSpecial = window.confirm("Include special characters? Ok for Yes Cancel for No.");
   
   //Checks that atleast one character type was selected if not loop back through prompts
-  if (charTypeLowercase === false && charTypeUppercase === false && charTypeNumber === false && charTypeSpecial === false) {
+  if (charType.Lowercase === false && charType.Uppercase === false && charType.Number === false && charType.Special === false) {
     window.alert("Please include at least one of the character types");
     generatePassword(passwordLengthValidated);
   }
   
-  var passwordUnshuffled = createPassword(passwordLengthValidated, charTypeLowercase, charTypeUppercase, charTypeNumber, charTypeSpecial);
+  var passwordUnshuffled = createPassword(passwordLengthValidated, charType.Lowercase, charType.Uppercase, charType.Number, charType.Special);
   
   var finalPassword = shuffleArray(passwordUnshuffled)
 
@@ -39,7 +45,7 @@ function validatePasswordLen() {
   var passwordLength = window.prompt("Enter Password Length (Minimum length: 8 Maximum length: 128");
   if (passwordLength < 8 || passwordLength > 128 || isNaN(passwordLength)) {
     window.alert("Please select a number length between 8 and 128 characters");
-    passwordCharLen();
+    return validatePasswordLen();
   }
   return passwordLength
 }
