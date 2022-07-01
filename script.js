@@ -1,22 +1,25 @@
 // Assignment code here
+
+//const to define characters allowed for each type
 const LOWERCASECHARACTERS = 'qwertyuioplkjhgfdsazxcvbnm'
 const UPPERCASECHARACTERS = 'QWERTYUIOPLKJHGFDSAZXCVBNM'
 const NUMBERCHARACTERS = '0123456789'
 const SPECIALCHARACTERS = '!#$%&()*+,-./:;<=>?@[^_]`{}\|~'
 
-
+// function which generates password when Generate Button is clicked on webpage
 function generatePassword(passwordLength) {
   
   var passwordLengthValidated = passwordLength 
   if (passwordLengthValidated === undefined) {
     passwordLengthValidated = validatePasswordLen();
   }
-  //change to object?
+  //Prompts user to select which character types they want to include
   var charTypeLowercase = window.confirm("Include lower case characters? Ok for Yes Cancel for No.");
   var charTypeUppercase = window.confirm("Include upper case characters? Ok for Yes Cancel for No.");
   var charTypeNumber = window.confirm("Include numbers? Ok for Yes Cancel for No.");
   var charTypeSpecial = window.confirm("Include special characters? Ok for Yes Cancel for No.");
   
+  //Checks that atleast one character type was selected if not loop back through prompts
   if (charTypeLowercase === false && charTypeUppercase === false && charTypeNumber === false && charTypeSpecial === false) {
     window.alert("Please include at least one of the character types");
     generatePassword(passwordLengthValidated);
@@ -26,10 +29,11 @@ function generatePassword(passwordLength) {
   
   var finalPassword = shuffleArray(passwordUnshuffled)
 
-
+//changes final password from array to string
   return finalPassword.join('')
 } 
 
+//Prompts user to input character length and validates whether input is valid 
 function validatePasswordLen() {
   
   var passwordLength = window.prompt("Enter Password Length (Minimum length: 8 Maximum length: 128");
@@ -40,11 +44,9 @@ function validatePasswordLen() {
   return passwordLength
 }
 
+//Randomly creates a password array
 function createPassword(passwordLengthValidated, charTypeLowercase, charTypeUppercase, charTypeNumber, charTypeSpecial) {
   var charTypeUsed = []
-  
-  
-  
 
   if (charTypeLowercase === true) {
     charTypeUsed.push('lower')
@@ -78,6 +80,7 @@ function createPassword(passwordLengthValidated, charTypeLowercase, charTypeUppe
   return passwordCharArray
 }
 
+//randomly selects a character from the string passed to it
 function determinePassChar (charType) {
   var char = ''
   switch(charType) {
@@ -97,6 +100,7 @@ function determinePassChar (charType) {
   }
 }
 
+//shuffles the values within the array given
 function shuffleArray(array) {
   let currentIndex = array.length, randomIndex;
 
